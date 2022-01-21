@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 namespace MDC_values
 {
@@ -37,26 +39,44 @@ namespace MDC_values
 
         }
 
-        static string computeMDC(byte[] byte_array)
+        static async Task<string> computeMDC(string input, string type)
         {
-            
+
+            byte[] byte_array = toByte(input, type);
             byte[] hashedValue = md5.ComputeHash(byte_array);
-            return BitConverter.ToString(hashedValue);
+            //await Task.Delay(10000);
+            return "The corresponding MDC hash value for the " + type + " " + input + " is: " + BitConverter.ToString(hashedValue);
         }
 
-        static void Main(string[] args)
+        static async Task<string> computeMDC(byte[] byte_array)
+        {
+
+            byte[] hashedValue = md5.ComputeHash(byte_array);
+            return "The corresponding MDC hash value for the byte array " + BitConverter.ToString(byte_array) + " is: " + BitConverter.ToString(hashedValue);
+        }
+
+        static async Task Main(string[] args)
         {
             //Console.WriteLine("Hello World!");
-
-            string s1 = computeMDC(toByte("Lorem ipsum dolor sit amet", "string"));
-            Console.WriteLine(s1);
-
-            string s2 = computeMDC(toByte("file1.txt", "file"));
-            Console.WriteLine(s2);
+            // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/async/
+            
+            var t1 = computeMDC("Lorem ipsum dolor sit amet", "string");
+            var t2 = computeMDC("file1.txt", "file");
 
             byte[] byte_array = new byte[] { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 };
-            string s3 = computeMDC(byte_array);
-            Console.WriteLine(s3);
+            var t3 = computeMDC(byte_array);
+
+            var tasks = new List<Task<string>> { t1, t2, t3 };
+            while (tasks.Count > 0)
+            {
+                Task<string> finished = await Task.WhenAny(tasks);
+                Console.WriteLine(finished.Result);
+                tasks.Remove(finished);
+            }
+            
+            /*Console.WriteLine(t1);
+            Console.WriteLine(t2);
+            Console.WriteLine(t3);*/
 
         }
 

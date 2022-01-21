@@ -1,0 +1,13 @@
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos\bin\Debug\netcoreapp3.1\Kerberos.exe
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos\bin\Debug\netcoreapp3.1\Kerberos.deps.json
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos\bin\Debug\netcoreapp3.1\Kerberos.runtimeconfig.json
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos\bin\Debug\netcoreapp3.1\Kerberos.runtimeconfig.dev.json
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos\bin\Debug\netcoreapp3.1\Kerberos.dll
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos\bin\Debug\netcoreapp3.1\Kerberos.pdb
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos\obj\Debug\netcoreapp3.1\Kerberos.csprojAssemblyReference.cache
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos\obj\Debug\netcoreapp3.1\Kerberos.csproj.CoreCompileInputs.cache
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos\obj\Debug\netcoreapp3.1\Kerberos.AssemblyInfoInputs.cache
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos\obj\Debug\netcoreapp3.1\Kerberos.AssemblyInfo.cs
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos\obj\Debug\netcoreapp3.1\Kerberos.dll
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos\obj\Debug\netcoreapp3.1\Kerberos.pdb
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos\obj\Debug\netcoreapp3.1\Kerberos.genruntimeconfig.cache
