@@ -1,0 +1,13 @@
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\MDC values\bin\Debug\netcoreapp3.1\MDC values.exe
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\MDC values\bin\Debug\netcoreapp3.1\MDC values.deps.json
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\MDC values\bin\Debug\netcoreapp3.1\MDC values.runtimeconfig.json
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\MDC values\bin\Debug\netcoreapp3.1\MDC values.runtimeconfig.dev.json
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\MDC values\bin\Debug\netcoreapp3.1\MDC values.dll
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\MDC values\bin\Debug\netcoreapp3.1\MDC values.pdb
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\MDC values\obj\Debug\netcoreapp3.1\MDC values.csprojAssemblyReference.cache
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\MDC values\obj\Debug\netcoreapp3.1\MDC values.csproj.CoreCompileInputs.cache
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\MDC values\obj\Debug\netcoreapp3.1\MDC values.AssemblyInfoInputs.cache
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\MDC values\obj\Debug\netcoreapp3.1\MDC values.AssemblyInfo.cs
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\MDC values\obj\Debug\netcoreapp3.1\MDC values.dll
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\MDC values\obj\Debug\netcoreapp3.1\MDC values.pdb
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\MDC values\obj\Debug\netcoreapp3.1\MDC values.genruntimeconfig.cache
