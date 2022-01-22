@@ -250,6 +250,7 @@ namespace Kerberos
             Client c = JsonConvert.DeserializeObject<Client>(C);
             client_key_storage[c] = K_C_S;
 
+            Console.WriteLine("K_C_S on server: " + K_C_S);
         }
 
         public string sendMessageToServer(string s)
@@ -337,6 +338,8 @@ namespace Kerberos
             l6.Add(DESImpl.EncryptDES(time_stamp, K_C_S));
 
             server.authenticateClient(l5, l6);
+
+            Console.WriteLine("K_C_S in client: " + K_C_S);
         }
 
         public void sendMessage(Server s)
