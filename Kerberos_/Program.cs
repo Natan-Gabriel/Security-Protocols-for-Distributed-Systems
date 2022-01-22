@@ -1,13 +1,26 @@
-﻿using System;
+﻿/* Test test = new Test();
+string myString = JsonConvert.SerializeObject(test);
+
+string myStringEncrypted = DESImpl.EncryptDES(myString, new UnicodeEncoding(false, true, true).GetString(DESalg.Key));
+string myStringDecrypted = DESImpl.DecryptDES(myStringEncrypted, new UnicodeEncoding(false, true, true).GetString(DESalg.Key));
+
+Console.WriteLine("myStringDecrypted: " + myStringDecrypted);
+            Test myInfoBlock = JsonConvert.DeserializeObject<Test>(myStringDecrypted);
+Console.WriteLine(myInfoBlock.testFunction()); */
+
+
+using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using System.IO;
 using System.Diagnostics;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 namespace Kerberos
 {
+
 
     public class Test
     {
@@ -21,7 +34,7 @@ namespace Kerberos
     class Program
     {
 
-        
+
 
         static void Main(string[] args)
         {
@@ -34,10 +47,10 @@ namespace Kerberos
             c.initClient();
             c.sendMessage(s);
 
-            /*DES DESalg = DES.Create("DES");
+            DES DESalg = DES.Create("DES");
             DES another_one = DES.Create("DES");
 
-            // Create a string to encrypt.
+            /*// Create a string to encrypt.
             string sData = "Here is some data to encrypt.";
 
             // Encrypt the string to an in-memory buffer.
@@ -79,8 +92,8 @@ namespace Kerberos
             /*Test test = new Test();
             string myString = JsonConvert.SerializeObject(test);
 
-            string myStringEncrypted = DESImpl.EncryptDES(myString, Convert.ToBase64String(DESalg.Key));
-            string myStringDecrypted = DESImpl.DecryptDES(myStringEncrypted, Convert.ToBase64String(DESalg.Key));
+            string myStringEncrypted = DESImpl.EncryptDES(myString, DESImpl.ToHexString(DESalg.Key));
+            string myStringDecrypted = DESImpl.DecryptDES(myStringEncrypted, DESImpl.ToHexString(DESalg.Key));
 
             Test myInfoBlock = JsonConvert.DeserializeObject<Test>(myStringDecrypted);
             Console.WriteLine(myInfoBlock.testFunction());*/
@@ -100,7 +113,7 @@ namespace Kerberos
             string K_C = "";
             if (!key_storage.ContainsKey(c_identifier.name))
             {
-                K_C = Convert.ToBase64String(DES.Create("DES").Key);
+                K_C = Convert.ToHexString(DES.Create("DES").Key);
                 key_storage[c_identifier.name] = K_C;
             }
             else
@@ -113,7 +126,7 @@ namespace Kerberos
             string K_TGS = "";
             if (!tgs_key_storage.ContainsKey(tgs_identifier))
             {
-                K_TGS = Convert.ToBase64String(DES.Create("DES").Key);
+                K_TGS = Convert.ToHexString(DES.Create("DES").Key);
                 tgs_key_storage[tgs_identifier] = K_TGS;
             }
             else
@@ -123,7 +136,8 @@ namespace Kerberos
 
             var l = new List<string>();
 
-            string K_C_TGS = Convert.ToBase64String(DES.Create("DES").Key);
+            string K_C_TGS = Convert.ToHexString(DES.Create("DES").Key);
+            Console.WriteLine("K_C_TGS: " + K_C_TGS + "gata");
             l.Add(DESImpl.EncryptDES(K_C_TGS, K_C));
 
             Console.WriteLine("K_C_TGS: " + K_C_TGS);
@@ -133,6 +147,9 @@ namespace Kerberos
 
             string c_serialized = JsonConvert.SerializeObject(c_identifier);
             l.Add(DESImpl.EncryptDES(DESImpl.EncryptDES(c_serialized, K_TGS), K_C));
+
+            string adr_serialized = "192.168.0.0";
+            l.Add(DESImpl.EncryptDES(DESImpl.EncryptDES(adr_serialized, K_TGS), K_C));
 
             string time_stamp = DateTime.Now.ToString("yyyyMMddHHmmssffff");
             l.Add(DESImpl.EncryptDES(DESImpl.EncryptDES(time_stamp, K_TGS), K_C));
@@ -161,20 +178,20 @@ namespace Kerberos
 
     public class TGS
     {
-        public static Dictionary<Server, string> server_key_storage = new Dictionary<Server, string>();
+        public static Dictionary<string, string> server_key_storage = new Dictionary<string, string>();
 
         public List<string> authenticateClient(Server s_identifier, List<string> l2, List<string> l3)
         {
-         
+
             string K_S = "";
-            if (!server_key_storage.ContainsKey(s_identifier))
+            if (!server_key_storage.ContainsKey(s_identifier.name))
             {
-                K_S = Convert.ToBase64String(DES.Create("DES").Key);
-                server_key_storage[s_identifier] = K_S;
+                K_S = Convert.ToHexString(DES.Create("DES").Key);
+                server_key_storage[s_identifier.name] = K_S;
             }
             else
             {
-                K_S = server_key_storage[s_identifier];
+                K_S = server_key_storage[s_identifier.name];
             }
 
             string K_TGS = Kerberos.tgs_key_storage[this];
@@ -200,7 +217,7 @@ namespace Kerberos
             string life_time = DateTime.Now.ToString("1:00");
             l.Add(DESImpl.EncryptDES(DESImpl.EncryptDES(life_time, K_S), K_C_TGS));
 
-            string K_C_S = Convert.ToBase64String(DES.Create("DES").Key);
+            string K_C_S = Convert.ToHexString(DES.Create("DES").Key);
             l.Add(DESImpl.EncryptDES(DESImpl.EncryptDES(K_C_S, K_S), K_C_TGS));
 
             l.Add(DESImpl.EncryptDES(K_C_S, K_C_TGS));
@@ -217,11 +234,12 @@ namespace Kerberos
     public class Server
     {
         static Dictionary<Client, string> client_key_storage = new Dictionary<Client, string>();
+        public string name = "da";
 
         public void authenticateClient(List<string> l5, List<string> l6)
         {
 
-            string K_S = TGS.server_key_storage[this];
+            string K_S = TGS.server_key_storage[this.name];
             string EK_S__K_C_S = l5[5];
             string K_C_S = DESImpl.DecryptDES(EK_S__K_C_S, K_S);
 
@@ -253,7 +271,7 @@ namespace Kerberos
 
         static Kerberos kerberos;
         static TGS tgs = new TGS();
-        static Server server;
+        static Server server = new Server();
         string K_C_S;
         public string name = "";
 
@@ -262,17 +280,17 @@ namespace Kerberos
         {
             Console.WriteLine("Hello World!");
             List<string> l1 = Kerberos.authenticateClient(this, tgs);
-            
+
             /////////////////////////////////////////////////////////
 
             string K_C = Kerberos.key_storage[this.name];
             Console.WriteLine("K_C: " + K_C);
             string E_KC_K_C_TGS = l1[0];
-            Console.WriteLine("K_C_TGS: "+DESImpl.DecryptDES(E_KC_K_C_TGS, K_C));
-            string K_C_TGS = Convert.ToBase64String(Encoding.UTF8.GetBytes(DESImpl.DecryptDES(E_KC_K_C_TGS, K_C)));
+            Console.WriteLine("K_C_TGS: " + DESImpl.DecryptDES(E_KC_K_C_TGS, K_C));
+            string K_C_TGS = DESImpl.DecryptDES(E_KC_K_C_TGS, K_C);
             l1.RemoveAt(0);
 
-           
+
             List<string> l2 = new List<string>();
 
             foreach (string elem in l1)
@@ -282,6 +300,7 @@ namespace Kerberos
 
             List<string> l3 = new List<string>();
 
+            Console.WriteLine("K_C_TGS: " + K_C_TGS);
             string c_serialized = JsonConvert.SerializeObject(this);
             l3.Add(DESImpl.EncryptDES(c_serialized, K_C_TGS));
 
@@ -327,7 +346,7 @@ namespace Kerberos
 
 
 
-        }
+    }
 
     //System.Text.Encoding.ASCII.GetBytes(input)
     //System.Text.Encoding.ASCII.GetString(hashedValue)
@@ -337,14 +356,34 @@ namespace Kerberos
     {
         //static DES des_alg = DES.Create("DES");
         static DES another_one = DES.Create("DES");
+        public static UnicodeEncoding enc = new UnicodeEncoding(false, true, true);
+
+        /* public static string ToHexString(byte[] ba)
+        {
+            return BitConverter.ToString(ba).Replace("-", "");
+        }
+
+        public static byte[] FromHexString(String hex)
+        {
+            int NumberChars = hex.Length;
+            byte[] bytes = new byte[NumberChars / 2];
+            for (int i = 0; i < NumberChars; i += 2)
+                bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
+            return bytes;
+        }*/
+
+
 
         public static string EncryptDES(string myString, string key)
         {
             //DES des_alg = DES.Create("DES");
-            byte[] byte_key = Convert.FromBase64String(key);
+            key = key.Substring(0, 16);
+            Console.WriteLine("WHATT: " + "   A String   ".Trim());
+            Console.WriteLine("key: " + key.Trim() + "gata");
+            byte[] byte_key = Convert.FromHexString(key.Trim());
             byte[] myStringEncrypted = EncryptTextToMemory(myString, byte_key, another_one.IV);
             //byte[] myStringEncrypted = EncryptTextToMemory(myString, bkey, another_one.IV);
-            return Convert.ToBase64String(myStringEncrypted);
+            return Convert.ToHexString(myStringEncrypted);
             //return myStringEncrypted;
 
 
@@ -353,8 +392,11 @@ namespace Kerberos
         public static string DecryptDES(string myStringEncrypted, string key)
         {
             //DES des_alg = DES.Create("DES");
-            byte[] byte_key = Convert.FromBase64String(key);
-            byte[] byte_myStringEncrypted = Convert.FromBase64String(myStringEncrypted);
+            key = key.Substring(0, 16);
+            byte[] byte_key = Convert.FromHexString(key);
+            myStringEncrypted = Regex.Replace(myStringEncrypted, @"[^A-F0-9]", "");
+            Console.WriteLine("myStringEncrypted: " + Regex.Replace(myStringEncrypted, @"[^A-F0-9]", "") + "hmm");
+            byte[] byte_myStringEncrypted = Convert.FromHexString(myStringEncrypted);
             string myStringDecrypted = DecryptTextFromMemory(byte_myStringEncrypted, byte_key, another_one.IV);
             //string myStringDecrypted = DecryptTextFromMemory(byte_myStringEncrypted, bkey, another_one.IV);
             return myStringDecrypted;

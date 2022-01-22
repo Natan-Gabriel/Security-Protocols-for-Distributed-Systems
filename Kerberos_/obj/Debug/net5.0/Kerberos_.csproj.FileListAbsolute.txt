@@ -1,0 +1,17 @@
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos_\bin\Debug\net5.0\Kerberos_.exe
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos_\bin\Debug\net5.0\Kerberos_.deps.json
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos_\bin\Debug\net5.0\Kerberos_.runtimeconfig.json
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos_\bin\Debug\net5.0\Kerberos_.runtimeconfig.dev.json
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos_\bin\Debug\net5.0\Kerberos_.dll
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos_\bin\Debug\net5.0\ref\Kerberos_.dll
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos_\bin\Debug\net5.0\Kerberos_.pdb
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos_\bin\Debug\net5.0\Newtonsoft.Json.dll
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos_\obj\Debug\net5.0\Kerberos_.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos_\obj\Debug\net5.0\Kerberos_.AssemblyInfoInputs.cache
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos_\obj\Debug\net5.0\Kerberos_.AssemblyInfo.cs
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos_\obj\Debug\net5.0\Kerberos_.csproj.CoreCompileInputs.cache
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos_\obj\Debug\net5.0\Kerberos_.csproj.CopyComplete
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos_\obj\Debug\net5.0\Kerberos_.dll
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos_\obj\Debug\net5.0\ref\Kerberos_.dll
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos_\obj\Debug\net5.0\Kerberos_.pdb
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Kerberos_\obj\Debug\net5.0\Kerberos_.genruntimeconfig.cache
