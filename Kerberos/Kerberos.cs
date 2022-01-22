@@ -4,19 +4,31 @@ using System.Security.Cryptography;
 using System.Text;
 using System.IO;
 using System.Diagnostics;
+using Newtonsoft.Json;
 
 namespace Kerberos
 {
+
+    public class Test
+    {
+        public string testFunction()
+        {
+            //Console.WriteLine("Test");
+            return "It worked";
+        }
+    }
+
     class Program
     {
 
-
+        
 
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
 
             DES DESalg = DES.Create("DES");
+            DES another_one = DES.Create("DES");
 
             // Create a string to encrypt.
             string sData = "Here is some data to encrypt.";
@@ -31,6 +43,35 @@ namespace Kerberos
             // Display the decrypted string to the console.
             Console.WriteLine(Final);
             Console.WriteLine(DateTime.Now.ToString("yyyyMMddHHmmssffff"));
+
+
+            //Console.WriteLine(DESalg.IV);
+            // WORKING EXAMPLE BELOW
+            /*Test test = new Test();
+            string myString = JsonConvert.SerializeObject(test);
+            Console.WriteLine("myString is: " + myString);
+
+            byte[] myStringEncrypted = DESImpl.EncryptTextToMemory(myString, DESalg.Key, another_one.IV);
+            string myStringDecrypted = DESImpl.DecryptTextFromMemory(myStringEncrypted, DESalg.Key, another_one.IV);
+            Console.WriteLine("myStringDecrypted: " + myStringDecrypted);
+
+            Test myInfoBlock = JsonConvert.DeserializeObject<Test>(myStringDecrypted);
+            Console.WriteLine(myInfoBlock.testFunction()); */
+
+            Test test = new Test();
+            string myString = JsonConvert.SerializeObject(test);
+            //Console.WriteLine("myString is: " + myString);
+
+            /*byte[] myStringEncrypted = DESImpl.EncryptDES(myString, System.Text.Encoding.ASCII.GetString(DESalg.Key), DESalg.Key, DESalg);
+            string myStringDecrypted = DESImpl.DecryptDES(myStringEncrypted, System.Text.Encoding.ASCII.GetString(DESalg.Key), DESalg.Key, DESalg);*/
+            string myStringEncrypted = DESImpl.EncryptDES(myString, Convert.ToBase64String(DESalg.Key));
+            string myStringDecrypted = DESImpl.DecryptDES(myStringEncrypted, Convert.ToBase64String(DESalg.Key));
+            Console.WriteLine("myStringDecrypted: " + myStringDecrypted);
+
+            Test myInfoBlock = JsonConvert.DeserializeObject<Test>(myStringDecrypted);
+            Console.WriteLine(myInfoBlock.testFunction());
+
+
         }
     }
 
@@ -38,15 +79,17 @@ namespace Kerberos
     {
         static TGS tgs;
 
-        public static List<string> authenticateClient(string c_identifier, string tgs_identifier)
+        public static List<string> authenticateClient(Client c_identifier, TGS tgs_identifier)
         {
             var l = new List<string>();
-            l.Add(tgs_identifier);
+            byte[] K_C_TGS = DES.Create("DES").Key;
+
+            /*l.Add(tgs_identifier);
             l.Add(c_identifier);
             l.Add("192.168.0.0");
             l.Add(DateTime.Now.ToString("yyyyMMddHHmmssffff"));
             l.Add("1:00");
-            l.Add("K C,TGS"); // encrypt with K TGS
+            l.Add("K C,TGS"); // encrypt with K TGS */
 
             return l;
         }
@@ -58,7 +101,7 @@ namespace Kerberos
     }
 
 
-    class TGS
+    public class TGS
     {
 
 
@@ -80,25 +123,107 @@ namespace Kerberos
         }
     }
 
-    class Client
+    public class Client
     {
 
         static Kerberos kerberos;
         static TGS tgs;
 
 
-        static void Main1(string[] args)
+        void Main1(string[] args)
         {
             Console.WriteLine("Hello World!");
-            List<string> l = Kerberos.authenticateClient("string c_identifier", "string tgs_identifier");
+            List<string> l = Kerberos.authenticateClient(this, tgs);
 
 
 
         }
     }
 
+    //System.Text.Encoding.ASCII.GetBytes(input)
+    //System.Text.Encoding.ASCII.GetString(hashedValue)
+
+    // https://docs.microsoft.com/en-us/dotnet/api/system.security.cryptography.des.create?view=net-6.0
     class DESImpl
     {
+        //static DES des_alg = DES.Create("DES");
+        static DES another_one = DES.Create("DES");
+
+        public static string EncryptDES(string myString, string key)
+        {
+            //DES des_alg = DES.Create("DES");
+            byte[] byte_key = Convert.FromBase64String(key);
+            byte[] myStringEncrypted = EncryptTextToMemory(myString, byte_key, another_one.IV);
+            //byte[] myStringEncrypted = EncryptTextToMemory(myString, bkey, another_one.IV);
+            return Convert.ToBase64String(myStringEncrypted);
+            //return myStringEncrypted;
+
+
+        }
+
+        public static string DecryptDES(string myStringEncrypted, string key)
+        {
+            //DES des_alg = DES.Create("DES");
+            byte[] byte_key = Convert.FromBase64String(key);
+            byte[] byte_myStringEncrypted = Convert.FromBase64String(myStringEncrypted);
+            string myStringDecrypted = DecryptTextFromMemory(byte_myStringEncrypted, byte_key, another_one.IV);
+            //string myStringDecrypted = DecryptTextFromMemory(byte_myStringEncrypted, bkey, another_one.IV);
+            return myStringDecrypted;
+
+            /*byte[] myStringEncrypted = DESImpl.EncryptTextToMemory(myString, DESalg.Key, another_one.IV);
+            string myStringDecrypted = DESImpl.DecryptTextFromMemory(myStringEncrypted, DESalg.Key, another_one.IV);
+            Console.WriteLine("myStringDecrypted: " + myStringDecrypted);
+
+            Test myInfoBlock = JsonConvert.DeserializeObject<Test>(myStringDecrypted);*/
+        }
+
+        /*public static byte[] EncryptDES(string myString, string key, byte[] bkey)
+        {
+            //DES des_alg = DES.Create("DES");
+            //byte[] byte_key = System.Text.Encoding.ASCII.GetBytes(key);
+            //byte[] myStringEncrypted = EncryptTextToMemory(myString, byte_key, des_alg.IV);
+            byte[] myStringEncrypted = EncryptTextToMemory(myString, bkey, another_one.IV);
+            //return System.Text.Encoding.ASCII.GetString(myStringEncrypted);
+            return myStringEncrypted;
+
+
+        }
+
+        public static string DecryptDES(byte[] myStringEncrypted, string key, byte[] bkey)
+        {
+            //DES des_alg = DES.Create("DES");
+            //byte[] byte_key = System.Text.Encoding.ASCII.GetBytes(key);
+            //byte[] byte_myStringEncrypted = System.Text.Encoding.ASCII.GetBytes(myStringEncrypted);
+            //string myStringDecrypted = DecryptTextFromMemory(byte_myStringEncrypted, byte_key, des_alg.IV);
+            string myStringDecrypted = DecryptTextFromMemory(myStringEncrypted, bkey, another_one.IV);
+            return myStringDecrypted;
+
+           
+    }*/
+
+        /*public static byte[] EncryptDES(string myString, string key, byte[] bkey)
+        {
+            DES des_alg = DES.Create("DES");
+            byte[] byte_key = System.Text.Encoding.ASCII.GetBytes(key);
+            //byte[] myStringEncrypted = EncryptTextToMemory(myString, byte_key, des_alg.IV);
+            byte[] myStringEncrypted = EncryptTextToMemory(myString, bkey, des_alg.IV);
+            //return System.Text.Encoding.ASCII.GetString(myStringEncrypted);
+            return myStringEncrypted;
+
+
+        }
+
+        public static string DecryptDES(byte[] myStringEncrypted, string key, byte[] bkey)
+        {
+            DES des_alg = DES.Create("DES");
+            byte[] byte_key = System.Text.Encoding.ASCII.GetBytes(key);
+            //byte[] byte_myStringEncrypted = System.Text.Encoding.ASCII.GetBytes(myStringEncrypted);
+            //string myStringDecrypted = DecryptTextFromMemory(byte_myStringEncrypted, byte_key, des_alg.IV);
+            string myStringDecrypted = DecryptTextFromMemory(byte_myStringEncrypted, bkey, des_alg.IV);
+            return myStringDecrypted;
+
+        }*/
+
         public static byte[] EncryptTextToMemory(string Data, byte[] Key, byte[] IV)
         {
             try
@@ -119,6 +244,7 @@ namespace Kerberos
                 byte[] toEncrypt = new ASCIIEncoding().GetBytes(Data);
 
                 // Write the byte array to the crypto stream and flush it.
+                //cStream.Write(toEncrypt);
                 cStream.Write(toEncrypt, 0, toEncrypt.Length);
                 cStream.FlushFinalBlock();
 
@@ -136,7 +262,7 @@ namespace Kerberos
             }
             catch (CryptographicException e)
             {
-                Console.WriteLine("A Cryptographic error occurred: {0}", e.Message);
+                Console.WriteLine("A Cryptographic error occurred1: {0}", e.Message);
                 return null;
             }
         }
@@ -170,7 +296,7 @@ namespace Kerberos
             }
             catch (CryptographicException e)
             {
-                Console.WriteLine("A Cryptographic error occurred: {0}", e.Message);
+                Console.WriteLine("A Cryptographic error occurred2: {0}", e.Message);
                 return null;
             }
         }
