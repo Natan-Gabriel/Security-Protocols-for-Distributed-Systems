@@ -98,8 +98,6 @@ namespace Simplified_Kerberos
             expiry_time = expiry_time.Add(thirty_minutes);
 
             l = expiry_time.ToString(FMT);
-            
-            //Console.WriteLine("l is: " + l + "end");
 
             ticket_b.Add(DESImpl.EncryptDES(k, K_BT));
             ticket_b.Add(DESImpl.EncryptDES(a, K_BT));
@@ -108,7 +106,6 @@ namespace Simplified_Kerberos
             var second_list = new List<string>();
             second_list.Add(DESImpl.EncryptDES(k, K_AT));
             second_list.Add(DESImpl.EncryptDES(n_A, K_AT));
-            //Console.WriteLine("n_A encrypted: " + DESImpl.EncryptDES(n_A, K_AT));
             second_list.Add(DESImpl.EncryptDES(l, K_AT));
             second_list.Add(DESImpl.EncryptDES(b, K_AT));
 
@@ -155,19 +152,12 @@ namespace Simplified_Kerberos
                 authenticator_decrypted.Add(DESImpl.DecryptDES(elem, k));
             }
 
-            //Console.WriteLine("ticket_b_decrypted.Count: " + ticket_b_decrypted.Count);
-            //Console.WriteLine("authenticator_decrypted.Count: " + authenticator_decrypted.Count);
-
-            //Console.WriteLine("A in ticket: " + ticket_b_decrypted[1] + "end");
-            //Console.WriteLine("A in authenticator: " + authenticator_decrypted[0] + "end");
-
             if (ticket_b_decrypted[1] == authenticator_decrypted[0])  // check if "A" is the same in the ticket and in the authenticator
                 Console.WriteLine("STEP 4: Client A is the same in the ticket and in the authenticator!");
             else
                 throw new Exception("STEP 4: Client A is not the same in the ticket and in the authenticator!");
 
             string t_A = authenticator_decrypted[1];
-            //Console.WriteLine("l is: " + l + "end") ;
             DateTime timestamp_in_A = DateTime.ParseExact(t_A, KerberosT.FMT, CultureInfo.InvariantCulture);
 
             if (timestamp_in_A < DateTime.Now) // check if t_A from authenticator is valid
@@ -176,10 +166,8 @@ namespace Simplified_Kerberos
                 throw new Exception("STEP 4: t_A is not valid!");
 
             string l = ticket_b_decrypted[2];
-            //Console.WriteLine("l is: " + l + "end") ;
             DateTime expiry_time = DateTime.ParseExact(l, KerberosT.FMT, CultureInfo.InvariantCulture);
 
-            //Console.WriteLine("expiry_time is: " + expiry_time);
 
             if (DateTime.Now < expiry_time) // check if the current time in B is valid with respect to expiry time L
                 Console.WriteLine("STEP 4: The ticket is still valid, the expiry_time being " + expiry_time + "!");
@@ -230,15 +218,10 @@ namespace Simplified_Kerberos
 
             List<string> authenticator = new List<string>();
 
-           
-            var a = this.name;
             k = DESImpl.DecryptDES(second_list[0], K_AT);
             string n_A_received = DESImpl.DecryptDES(second_list[1], K_AT);
-            //Console.WriteLine("n_A_received encrypted : " + second_list[1] + "end");
             valability_period = DESImpl.DecryptDES(second_list[2], K_AT);
             string b_identifier = DESImpl.DecryptDES(second_list[3], K_AT);
-            //Console.WriteLine("n_A: " + n_A + "end");
-            //Console.WriteLine("n_A_received: " + n_A_received.Trim() + "end");
 
             if (n_A.Equals(n_A_received))
                 Console.WriteLine("STEP 3: The nonce sent is equal with the received one!\n");
@@ -246,9 +229,10 @@ namespace Simplified_Kerberos
                 throw new Exception("STEP 3: The nonce sent is not equal with the received one!");
 
 
+            var a = this.name;
             DateTime expiry_time = DateTime.Now;
             string t_a =  expiry_time.ToString(KerberosT.FMT);
-
+            
             authenticator.Add(DESImpl.EncryptDES(a, k));
             authenticator.Add(DESImpl.EncryptDES(t_a, k));
 
@@ -271,12 +255,9 @@ namespace Simplified_Kerberos
         public static string EncryptDES(string myString, string key)
         {
             key = key.Substring(0, 16);
-            //Console.WriteLine("WHATT: " + "   A String   ".Trim());
-            //Console.WriteLine("key: " + key.Trim() + "gata");
-            byte[] byte_key = Convert.FromHexString(key.Trim());
+            byte[] byte_key = Convert.FromHexString(key);
             byte[] myStringEncrypted = EncryptTextToMemory(myString, byte_key, another_one.IV);
             return Convert.ToHexString(myStringEncrypted);
-
 
         }
 
@@ -284,11 +265,10 @@ namespace Simplified_Kerberos
         {
             key = key.Substring(0, 16);
             byte[] byte_key = Convert.FromHexString(key);
-            myStringEncrypted = Regex.Replace(myStringEncrypted, @"[^A-F0-9]", "");
-            //Console.WriteLine("myStringEncrypted: " + Regex.Replace(myStringEncrypted, @"[^A-F0-9]", "") + "hmm");
+            myStringEncrypted = Regex.Replace(myStringEncrypted, @"[^A-F0-9]", ""); // remove trailing spaces
             byte[] byte_myStringEncrypted = Convert.FromHexString(myStringEncrypted);
             string myStringDecrypted = DecryptTextFromMemory(byte_myStringEncrypted, byte_key, another_one.IV);
-            return Regex.Replace(myStringDecrypted, @"[^A-Za-z0-9+-:.+ ]+", "");
+            return Regex.Replace(myStringDecrypted, @"[^A-Za-z0-9+-:.+ ]+", ""); // remove trailing spaces
 
         }
 
@@ -380,135 +360,3 @@ namespace Simplified_Kerberos
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*static void Main(string[] args)
-{
-    Console.WriteLine("Hello World!");
-
-    *//*Client c = new Client();
-    c.name = "Victor";
-    Server s = new Server();
-    Kerberos k = new Kerberos();
-    c.initClient();
-    c.sendMessage(s);
-
-    DES DESalg = DES.Create("DES");
-    DES another_one = DES.Create("DES");*/
-
-
-    /*string K_AT = Convert.ToHexString(DES.Create("DES").Key);
-    string K_BT = Convert.ToHexString(DES.Create("DES").Key);*//*
-
-    List<string> list = Kerberos.step_1("client", "server");
-    ListBox listBox = Kerberos.step_2(list);
-    ListBox listBox2 = Kerberos.step_3(list, listBox);
-    string str = Kerberos.step_4(listBox2);
-    Console.WriteLine("str: " + str);
-
-
-
-}
-    }
-
-    public class Kerberos
-{
-    *//*static TGS tgs = new TGS();
-    public static Dictionary<string, string> key_storage = new Dictionary<string, string>();
-    public static Dictionary<TGS, string> tgs_key_storage = new Dictionary<TGS, string>();*//*
-
-    static string K_AT = Convert.ToHexString(DES.Create("DES").Key);
-    static string K_BT = Convert.ToHexString(DES.Create("DES").Key);
-    static string k = Convert.ToHexString(DES.Create("DES").Key);
-
-    public static List<string> step_1(string a, string b)
-    {
-        string n_A = DESImpl.generateNonce();
-        var l = new List<string>();
-        l.Add(a);
-        l.Add(b);
-        l.Add(n_A);
-        return l;
-    }
-
-    public static ListBox step_2(List<string> list)
-    {
-
-        string a = list[0];
-        string b = list[0];
-        string n_A = list[0];
-
-
-        var ticket_b = new List<string>();
-        var l = ""; // to change
-
-        ticket_b.Add(DESImpl.EncryptDES(k, K_BT));
-        ticket_b.Add(DESImpl.EncryptDES(a, K_BT));
-        ticket_b.Add(DESImpl.EncryptDES(l, K_BT));
-
-        var second_list = new List<string>();
-        second_list.Add(DESImpl.EncryptDES(k, K_AT));
-        second_list.Add(DESImpl.EncryptDES(n_A, K_AT));
-        second_list.Add(DESImpl.EncryptDES(l, K_AT));
-        second_list.Add(DESImpl.EncryptDES(b, K_AT));
-
-        return new ListBox(ticket_b, second_list);
-    }
-
-    public static ListBox step_3(List<string> list, ListBox listBox)
-    {
-
-        List<string> ticket_b = listBox.ticket_b;
-        List<string> second_list = listBox.second_list;
-
-        List<string> authenticator = new List<string>();
-
-        var t_a = ""; // to change
-        var a = list[0];
-        authenticator.Add(DESImpl.EncryptDES(a, k));
-        authenticator.Add(DESImpl.EncryptDES(t_a, k));
-
-        return new ListBox(ticket_b, authenticator);
-    }
-
-    public static string step_4(ListBox listBox)
-    {
-        //if checks pass
-        List<string> second_list = listBox.second_list;
-
-        var t_a = second_list[1]; //encrypted t_a
-        return t_a;
-
-    }*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
