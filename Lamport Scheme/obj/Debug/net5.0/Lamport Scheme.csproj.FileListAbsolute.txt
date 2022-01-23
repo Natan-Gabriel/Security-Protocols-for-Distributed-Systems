@@ -1,0 +1,16 @@
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Lamport Scheme\obj\Debug\net5.0\Lamport Scheme.csproj.AssemblyReference.cache
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Lamport Scheme\obj\Debug\net5.0\Lamport Scheme.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Lamport Scheme\obj\Debug\net5.0\Lamport Scheme.AssemblyInfoInputs.cache
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Lamport Scheme\obj\Debug\net5.0\Lamport Scheme.AssemblyInfo.cs
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Lamport Scheme\obj\Debug\net5.0\Lamport Scheme.csproj.CoreCompileInputs.cache
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Lamport Scheme\bin\Debug\net5.0\Lamport Scheme.exe
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Lamport Scheme\bin\Debug\net5.0\Lamport Scheme.deps.json
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Lamport Scheme\bin\Debug\net5.0\Lamport Scheme.runtimeconfig.json
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Lamport Scheme\bin\Debug\net5.0\Lamport Scheme.runtimeconfig.dev.json
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Lamport Scheme\bin\Debug\net5.0\Lamport Scheme.dll
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Lamport Scheme\bin\Debug\net5.0\ref\Lamport Scheme.dll
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Lamport Scheme\bin\Debug\net5.0\Lamport Scheme.pdb
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Lamport Scheme\obj\Debug\net5.0\Lamport Scheme.dll
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Lamport Scheme\obj\Debug\net5.0\ref\Lamport Scheme.dll
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Lamport Scheme\obj\Debug\net5.0\Lamport Scheme.pdb
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Lamport Scheme\obj\Debug\net5.0\Lamport Scheme.genruntimeconfig.cache
