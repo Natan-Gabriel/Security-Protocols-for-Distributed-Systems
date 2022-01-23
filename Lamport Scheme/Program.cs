@@ -40,7 +40,7 @@ namespace Lamport_Scheme
 
         static SHA256 sha256 = System.Security.Cryptography.SHA256.Create();
 
-        // https://stackoverflow.com/questions/1344221/how-can-i-generate-random-alphanumeric-strings
+
         public static byte[] random256Bits()
         {
             

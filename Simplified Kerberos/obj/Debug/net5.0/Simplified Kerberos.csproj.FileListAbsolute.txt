@@ -1,0 +1,18 @@
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Simplified Kerberos\bin\Debug\net5.0\Simplified Kerberos.exe
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Simplified Kerberos\bin\Debug\net5.0\Simplified Kerberos.deps.json
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Simplified Kerberos\bin\Debug\net5.0\Simplified Kerberos.runtimeconfig.json
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Simplified Kerberos\bin\Debug\net5.0\Simplified Kerberos.runtimeconfig.dev.json
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Simplified Kerberos\bin\Debug\net5.0\Simplified Kerberos.dll
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Simplified Kerberos\bin\Debug\net5.0\ref\Simplified Kerberos.dll
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Simplified Kerberos\bin\Debug\net5.0\Simplified Kerberos.pdb
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Simplified Kerberos\bin\Debug\net5.0\Newtonsoft.Json.dll
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Simplified Kerberos\obj\Debug\net5.0\Simplified Kerberos.csproj.AssemblyReference.cache
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Simplified Kerberos\obj\Debug\net5.0\Simplified Kerberos.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Simplified Kerberos\obj\Debug\net5.0\Simplified Kerberos.AssemblyInfoInputs.cache
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Simplified Kerberos\obj\Debug\net5.0\Simplified Kerberos.AssemblyInfo.cs
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Simplified Kerberos\obj\Debug\net5.0\Simplified Kerberos.csproj.CoreCompileInputs.cache
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Simplified Kerberos\obj\Debug\net5.0\Simplified Kerberos.csproj.CopyComplete
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Simplified Kerberos\obj\Debug\net5.0\Simplified Kerberos.dll
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Simplified Kerberos\obj\Debug\net5.0\ref\Simplified Kerberos.dll
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Simplified Kerberos\obj\Debug\net5.0\Simplified Kerberos.pdb
+C:\Users\Miriam\Desktop\facultate\UOradea\sem1\Security Protocols for Distributed Systems\Simplified Kerberos\obj\Debug\net5.0\Simplified Kerberos.genruntimeconfig.cache
