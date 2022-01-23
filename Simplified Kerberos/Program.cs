@@ -11,14 +11,6 @@ using System.Linq;
 
 namespace Simplified_Kerberos
 {
-    public class Test
-    {
-        public string testFunction()
-        {
-            //Console.WriteLine("Test");
-            return "It worked";
-        }
-    }
 
     public class ListBox
     {
@@ -35,55 +27,26 @@ namespace Simplified_Kerberos
     class Program
     {
 
-
-
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            try
+            {
+                KerberosT t = new KerberosT();
+                ServerB b = new ServerB("server");
+                ClientA a = new ClientA("client");
 
-            DateTime utcTime = DateTime.UtcNow;
-            DateTime l = new DateTime(2022, 1, 23, 21, 30, 0);
-            TimeSpan twoAndAHalfHours = new TimeSpan(12, 30, 0);
-            l = l.Add(twoAndAHalfHours);
+                authenticate_ClientA_to_ServerB(a, b, t);
 
-            DateTime localTime = DateTime.Now;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+ 
+        }
 
-            Console.WriteLine("utcTime: " + utcTime);
-
-            const string FMT = "O";
-            string strDate = utcTime.ToString(FMT);
-            utcTime = DateTime.ParseExact(strDate, FMT, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
-
-            Console.WriteLine("utcTime: " + utcTime);
-
-            Console.WriteLine("Difference between {0} and {1} time: {2}:{3} hours",
-                              localTime.Kind,
-                              utcTime.Kind,
-                              l - utcTime,
-                              utcTime < localTime);
-
-            /*string strin = "    C   Sharp       ";
-            strin = Regex.Replace(strin, @"s", "");
-            Console.WriteLine(strin);*/
-
-            /*Client c = new Client();
-            c.name = "Victor";
-            Server s = new Server();
-            Kerberos k = new Kerberos();
-            c.initClient();
-            c.sendMessage(s);
-
-            DES DESalg = DES.Create("DES");
-            DES another_one = DES.Create("DES");*/
-
-
-            /*string K_AT = Convert.ToHexString(DES.Create("DES").Key);
-            string K_BT = Convert.ToHexString(DES.Create("DES").Key);*/
-
-            KerberosT t = new KerberosT();
-            ServerB b = new ServerB();
-            ClientA a = new ClientA();
-
+        public static void authenticate_ClientA_to_ServerB(ClientA a, ServerB b, KerberosT t)
+        {
             string K_AT = Convert.ToHexString(DES.Create("DES").Key); // share K_AT
             t.setK_AT(K_AT);
             a.setK_AT(K_AT);
@@ -92,23 +55,16 @@ namespace Simplified_Kerberos
             t.setK_BT(K_BT);
             b.setK_BT(K_BT);
 
-            List<string> list = a.step_1("client", "server");
-            ListBox listBox = t.step_2(list);
-            ListBox listBox2 = a.step_3(list, listBox);
-            string str = b.step_4(listBox2);
 
-            Console.WriteLine("str: " + str);
-
-
-
+            List<string> list = a.step_1(a.name, b.name); // (1) A -> T
+            ListBox listBox = t.step_2(list); // (2) A <- T
+            ListBox listBox2 = a.step_3(listBox); // (3) A -> B
+            b.step_4(listBox2); // (4) A <- B
         }
     }
 
     public class KerberosT
     {
-        /*static TGS tgs = new TGS();
-        public static Dictionary<string, string> key_storage = new Dictionary<string, string>();
-        public static Dictionary<TGS, string> tgs_key_storage = new Dictionary<TGS, string>();*/
 
         public static string FMT = "O";
 
@@ -128,7 +84,6 @@ namespace Simplified_Kerberos
 
         public ListBox step_2(List<string> list)
         {
-
             string a = list[0];
             string b = list[1];
             string n_A = list[2];
@@ -144,7 +99,7 @@ namespace Simplified_Kerberos
 
             l = expiry_time.ToString(FMT);
             
-            Console.WriteLine("l is: " + l + "end");
+            //Console.WriteLine("l is: " + l + "end");
 
             ticket_b.Add(DESImpl.EncryptDES(k, K_BT));
             ticket_b.Add(DESImpl.EncryptDES(a, K_BT));
@@ -153,19 +108,11 @@ namespace Simplified_Kerberos
             var second_list = new List<string>();
             second_list.Add(DESImpl.EncryptDES(k, K_AT));
             second_list.Add(DESImpl.EncryptDES(n_A, K_AT));
-            Console.WriteLine("n_A encrypted: " + DESImpl.EncryptDES(n_A, K_AT));
+            //Console.WriteLine("n_A encrypted: " + DESImpl.EncryptDES(n_A, K_AT));
             second_list.Add(DESImpl.EncryptDES(l, K_AT));
             second_list.Add(DESImpl.EncryptDES(b, K_AT));
 
             return new ListBox(ticket_b, second_list);
-        }
-
-
-        public static List<string> authenticateClient()
-        {
-            
-            var l = new List<string>();
-            return l;
         }
 
     }
@@ -173,15 +120,14 @@ namespace Simplified_Kerberos
 
     public class ServerB
     {
-        /*static TGS tgs = new TGS();
-        public static Dictionary<string, string> key_storage = new Dictionary<string, string>();
-        public static Dictionary<TGS, string> tgs_key_storage = new Dictionary<TGS, string>();*/
-
-        //static string FMT = "O";
-
-        static string k = Convert.ToHexString(DES.Create("DES").Key);
 
         string K_BT;
+        public string name;
+
+        public ServerB(string _name)
+        {
+            name = _name;
+        }
 
         public void setK_BT(string key)
         {
@@ -191,7 +137,6 @@ namespace Simplified_Kerberos
 
         public string step_4(ListBox listBox)
         {
-            //if checks pass
             List<string> ticket_b = listBox.ticket_b;
             List<string> second_list = listBox.second_list;
 
@@ -210,65 +155,56 @@ namespace Simplified_Kerberos
                 authenticator_decrypted.Add(DESImpl.DecryptDES(elem, k));
             }
 
-            Console.WriteLine("ticket_b_decrypted.Count: " + ticket_b_decrypted.Count);
-            Console.WriteLine("authenticator_decrypted.Count: " + authenticator_decrypted.Count);
+            //Console.WriteLine("ticket_b_decrypted.Count: " + ticket_b_decrypted.Count);
+            //Console.WriteLine("authenticator_decrypted.Count: " + authenticator_decrypted.Count);
 
-            Console.WriteLine("A in ticket: " + ticket_b_decrypted[1] + "end");
-            Console.WriteLine("A in authenticator: " + authenticator_decrypted[0] + "end");
+            //Console.WriteLine("A in ticket: " + ticket_b_decrypted[1] + "end");
+            //Console.WriteLine("A in authenticator: " + authenticator_decrypted[0] + "end");
 
             if (ticket_b_decrypted[1] == authenticator_decrypted[0])  // check if "A" is the same in the ticket and in the authenticator
-                Console.WriteLine("A in ticket and in authenticator are the same!");
+                Console.WriteLine("STEP 4: Client A is the same in the ticket and in the authenticator!");
+            else
+                throw new Exception("STEP 4: Client A is not the same in the ticket and in the authenticator!");
 
             string t_A = authenticator_decrypted[1];
             //Console.WriteLine("l is: " + l + "end") ;
             DateTime timestamp_in_A = DateTime.ParseExact(t_A, KerberosT.FMT, CultureInfo.InvariantCulture);
 
             if (timestamp_in_A < DateTime.Now) // check if t_A from authenticator is valid
-                Console.WriteLine("t_A is valid!");
+                Console.WriteLine("STEP 4: t_A is valid!");
+            else
+                throw new Exception("STEP 4: t_A is not valid!");
 
             string l = ticket_b_decrypted[2];
-            Console.WriteLine("l is: " + l + "end") ;
+            //Console.WriteLine("l is: " + l + "end") ;
             DateTime expiry_time = DateTime.ParseExact(l, KerberosT.FMT, CultureInfo.InvariantCulture);
 
-            Console.WriteLine("expiry_time is: " + expiry_time);
+            //Console.WriteLine("expiry_time is: " + expiry_time);
 
             if (DateTime.Now < expiry_time) // check if the current time in B is valid with respect to expiry time L
-                Console.WriteLine("The ticket is still valid");
+                Console.WriteLine("STEP 4: The ticket is still valid, the expiry_time being " + expiry_time + "!");
             else
-                Console.WriteLine("The ticket expired");
-
-           
-
-            /*string aux = ticket_b_decrypted[1];
-            if (!aux[aux.Length - 1].Equals(' '))
-                Console.WriteLine(aux[aux.Length - 1] + "Last char is not empty!");*/
+                throw new Exception("STEP 4: The ticket expired on " + expiry_time);
 
 
-            Console.WriteLine("Successful authentication!");
-
-            //time checking
+            Console.WriteLine("STEP 4: Successful authentication!");
 
             return second_list[1]; //encrypted t_a
 
-        }
-
-
-        public static List<string> authenticateClient()
-        {
-
-            var l = new List<string>();
-            return l;
         }
 
     }
 
     public class ClientA
     {
-        /*static TGS tgs = new TGS();
-        public static Dictionary<string, string> key_storage = new Dictionary<string, string>();
-        public static Dictionary<TGS, string> tgs_key_storage = new Dictionary<TGS, string>();*/
 
         string K_AT, n_A, k, valability_period;
+        public string name;
+
+        public ClientA(string _name)
+        {
+            name = _name;
+        }
 
         public void setK_AT(string key)
         {
@@ -286,7 +222,7 @@ namespace Simplified_Kerberos
         }
 
 
-        public ListBox step_3(List<string> list, ListBox listBox)
+        public ListBox step_3(ListBox listBox)
         {
 
             List<string> ticket_b = listBox.ticket_b;
@@ -295,19 +231,19 @@ namespace Simplified_Kerberos
             List<string> authenticator = new List<string>();
 
            
-            var a = list[0];
+            var a = this.name;
             k = DESImpl.DecryptDES(second_list[0], K_AT);
             string n_A_received = DESImpl.DecryptDES(second_list[1], K_AT);
-            Console.WriteLine("n_A_received encrypted : " + second_list[1] + "end");
+            //Console.WriteLine("n_A_received encrypted : " + second_list[1] + "end");
             valability_period = DESImpl.DecryptDES(second_list[2], K_AT);
             string b_identifier = DESImpl.DecryptDES(second_list[3], K_AT);
-            Console.WriteLine("n_A: " + n_A + "end");
-            Console.WriteLine("n_A_received: " + n_A_received.Trim() + "end");
+            //Console.WriteLine("n_A: " + n_A + "end");
+            //Console.WriteLine("n_A_received: " + n_A_received.Trim() + "end");
 
-            if (!n_A.Equals(n_A_received))
-                throw new Exception("the nonce sent is not equal with the received one!");
+            if (n_A.Equals(n_A_received))
+                Console.WriteLine("STEP 3: The nonce sent is equal with the received one!\n");
             else
-                Console.WriteLine("Good!!");
+                throw new Exception("STEP 3: The nonce sent is not equal with the received one!");
 
 
             DateTime expiry_time = DateTime.Now;
@@ -319,146 +255,44 @@ namespace Simplified_Kerberos
             return new ListBox(ticket_b, authenticator);
         }
 
-
-        public static List<string> authenticateClient()
-        {
-
-            var l = new List<string>();
-            return l;
-        }
-
     }
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //System.Text.Encoding.ASCII.GetBytes(input)
-    //System.Text.Encoding.ASCII.GetString(hashedValue)
-
     // https://docs.microsoft.com/en-us/dotnet/api/system.security.cryptography.des.create?view=net-6.0
     class DESImpl
     {
-        //static DES des_alg = DES.Create("DES");
         static DES another_one = DES.Create("DES");
         public static UnicodeEncoding enc = new UnicodeEncoding(false, true, true);
         private static Random random = new Random();
 
-        /* public static string ToHexString(byte[] ba)
-        {
-            return BitConverter.ToString(ba).Replace("-", "");
-        }
-
-        public static byte[] FromHexString(String hex)
-        {
-            int NumberChars = hex.Length;
-            byte[] bytes = new byte[NumberChars / 2];
-            for (int i = 0; i < NumberChars; i += 2)
-                bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
-            return bytes;
-        }*/
-
-        //https://sqlsteve.wordpress.com/2014/04/23/how-to-create-a-nonce-in-c/
-        public static string generateNonce() 
-        {
-            const string chars = "0123456789";
-            return new string(Enumerable.Repeat(chars, 40)
-                .Select(s => s[random.Next(s.Length)]).ToArray());
-        }
-
 
         public static string EncryptDES(string myString, string key)
         {
-            //DES des_alg = DES.Create("DES");
             key = key.Substring(0, 16);
-            Console.WriteLine("WHATT: " + "   A String   ".Trim());
-            Console.WriteLine("key: " + key.Trim() + "gata");
+            //Console.WriteLine("WHATT: " + "   A String   ".Trim());
+            //Console.WriteLine("key: " + key.Trim() + "gata");
             byte[] byte_key = Convert.FromHexString(key.Trim());
             byte[] myStringEncrypted = EncryptTextToMemory(myString, byte_key, another_one.IV);
-            //byte[] myStringEncrypted = EncryptTextToMemory(myString, bkey, another_one.IV);
             return Convert.ToHexString(myStringEncrypted);
-            //return myStringEncrypted;
 
 
         }
 
         public static string DecryptDES(string myStringEncrypted, string key)
         {
-            //DES des_alg = DES.Create("DES");
             key = key.Substring(0, 16);
             byte[] byte_key = Convert.FromHexString(key);
             myStringEncrypted = Regex.Replace(myStringEncrypted, @"[^A-F0-9]", "");
-            Console.WriteLine("myStringEncrypted: " + Regex.Replace(myStringEncrypted, @"[^A-F0-9]", "") + "hmm");
+            //Console.WriteLine("myStringEncrypted: " + Regex.Replace(myStringEncrypted, @"[^A-F0-9]", "") + "hmm");
             byte[] byte_myStringEncrypted = Convert.FromHexString(myStringEncrypted);
             string myStringDecrypted = DecryptTextFromMemory(byte_myStringEncrypted, byte_key, another_one.IV);
-            //string myStringDecrypted = DecryptTextFromMemory(byte_myStringEncrypted, bkey, another_one.IV);
-            return Regex.Replace(myStringDecrypted, @"[^A-Za-z0-9+-:.+ ]+", ""); // myStringDecrypted.Trim();
-
-            /*byte[] myStringEncrypted = DESImpl.EncryptTextToMemory(myString, DESalg.Key, another_one.IV);
-            string myStringDecrypted = DESImpl.DecryptTextFromMemory(myStringEncrypted, DESalg.Key, another_one.IV);
-            Console.WriteLine("myStringDecrypted: " + myStringDecrypted);
-
-            Test myInfoBlock = JsonConvert.DeserializeObject<Test>(myStringDecrypted);*/
-        }
-
-        /*public static byte[] EncryptDES(string myString, string key, byte[] bkey)
-        {
-            //DES des_alg = DES.Create("DES");
-            //byte[] byte_key = System.Text.Encoding.ASCII.GetBytes(key);
-            //byte[] myStringEncrypted = EncryptTextToMemory(myString, byte_key, des_alg.IV);
-            byte[] myStringEncrypted = EncryptTextToMemory(myString, bkey, another_one.IV);
-            //return System.Text.Encoding.ASCII.GetString(myStringEncrypted);
-            return myStringEncrypted;
-
+            return Regex.Replace(myStringDecrypted, @"[^A-Za-z0-9+-:.+ ]+", "");
 
         }
 
-        public static string DecryptDES(byte[] myStringEncrypted, string key, byte[] bkey)
-        {
-            //DES des_alg = DES.Create("DES");
-            //byte[] byte_key = System.Text.Encoding.ASCII.GetBytes(key);
-            //byte[] byte_myStringEncrypted = System.Text.Encoding.ASCII.GetBytes(myStringEncrypted);
-            //string myStringDecrypted = DecryptTextFromMemory(byte_myStringEncrypted, byte_key, des_alg.IV);
-            string myStringDecrypted = DecryptTextFromMemory(myStringEncrypted, bkey, another_one.IV);
-            return myStringDecrypted;
 
-           
-    }*/
-
-        /*public static byte[] EncryptDES(string myString, string key, byte[] bkey)
-        {
-            DES des_alg = DES.Create("DES");
-            byte[] byte_key = System.Text.Encoding.ASCII.GetBytes(key);
-            //byte[] myStringEncrypted = EncryptTextToMemory(myString, byte_key, des_alg.IV);
-            byte[] myStringEncrypted = EncryptTextToMemory(myString, bkey, des_alg.IV);
-            //return System.Text.Encoding.ASCII.GetString(myStringEncrypted);
-            return myStringEncrypted;
-
-
-        }
-
-        public static string DecryptDES(byte[] myStringEncrypted, string key, byte[] bkey)
-        {
-            DES des_alg = DES.Create("DES");
-            byte[] byte_key = System.Text.Encoding.ASCII.GetBytes(key);
-            //byte[] byte_myStringEncrypted = System.Text.Encoding.ASCII.GetBytes(myStringEncrypted);
-            //string myStringDecrypted = DecryptTextFromMemory(byte_myStringEncrypted, byte_key, des_alg.IV);
-            string myStringDecrypted = DecryptTextFromMemory(byte_myStringEncrypted, bkey, des_alg.IV);
-            return myStringDecrypted;
-
-        }*/
 
         public static byte[] EncryptTextToMemory(string Data, byte[] Key, byte[] IV)
         {
@@ -535,6 +369,14 @@ namespace Simplified_Kerberos
                 Console.WriteLine("A Cryptographic error occurred2: {0}", e.Message);
                 return null;
             }
+        }
+
+        // https://stackoverflow.com/questions/1344221/how-can-i-generate-random-alphanumeric-strings
+        public static string generateNonce()
+        {
+            const string chars = "0123456789";
+            return new string(Enumerable.Repeat(chars, 40)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }
