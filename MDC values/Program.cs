@@ -60,10 +60,10 @@ namespace MDC_values
             //Console.WriteLine("Hello World!");
             // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/async/
             
-            var t1 = computeMDC("Lorem ipsum dolor sit amet", "string");
-            var t2 = computeMDC("file1.txt", "file");
+            var t1 = computeMDC("Lorem ipsum dolor sit amet", "string"); // for string
+            var t2 = computeMDC("file1.txt", "file"); // for file content
 
-            byte[] byte_array = new byte[] { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 };
+            byte[] byte_array = new byte[] { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 }; // for byte array
             var t3 = computeMDC(byte_array);
 
             var tasks = new List<Task<string>> { t1, t2, t3 };
@@ -73,78 +73,8 @@ namespace MDC_values
                 Console.WriteLine(finished.Result);
                 tasks.Remove(finished);
             }
-            
-            /*Console.WriteLine(t1);
-            Console.WriteLine(t2);
-            Console.WriteLine(t3);*/
 
         }
 
-
-
-            /*string type = Console.ReadLine();
-            if (type == "byte array")
-            {
-
-            }
-            string input = Console.ReadLine();
-
-            try
-            {
-                readFile("file1.txt");
-            }
-            catch
-            {
-                Console.WriteLine("An error occurred while reading the file");
-            }
-            readFile("file.txt");*/
-        
-
-        /*string input = "da";
-        MD5 md5 = System.Security.Cryptography.MD5.Create();
-        byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
-        //byte[] hashedValue = md5.ComputeHash(inputBytes);
-        byte[] hashedValue = md5.ComputeHash(inputBytes);
-        //Console.WriteLine(System.Text.Encoding.ASCII.GetString(hashedValue));
-        Console.WriteLine(BitConverter.ToString(hashedValue));*/
-
-    /*static void Main(){
-
-        const int arrayLength = 1000;
-
-        // Create random data to write to the stream.
-        byte[] dataArray = new byte[arrayLength];
-        new Random().NextBytes(dataArray);
-
-        BinaryWriter binWriter = new BinaryWriter(new MemoryStream());
-
-        // Write the data to the stream.
-        Console.WriteLine("Writing the data.");
-        binWriter.Write(dataArray);
-
-        // Create the reader using the stream from the writer.
-        BinaryReader binReader =
-            new BinaryReader(binWriter.BaseStream);
-
-        // Set Position to the beginning of the stream.
-        binReader.BaseStream.Position = 0;
-
-        // Read and verify the data.
-        byte[] verifyArray = binReader.ReadBytes(arrayLength);
-        if (verifyArray.Length != arrayLength)
-        {
-            Console.WriteLine("Error writing the data.");
-            return;
-        }
-        for (int i = 0; i < arrayLength; i++)
-        {
-            if (verifyArray[i] != dataArray[i])
-            {
-                Console.WriteLine("Error writing the data.");
-                return;
-            }
-        }
-        Console.WriteLine("The data was written and verified.");
-    }*/
-}
+    }
 }
